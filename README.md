@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# KKN Log Book Generator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Editing word file everyday for 45 days is just too much for me
 
 ## Available Scripts
 
