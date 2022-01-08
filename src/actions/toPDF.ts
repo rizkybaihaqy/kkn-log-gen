@@ -1,9 +1,7 @@
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import { Activities, Log } from '../type'
-
-const logo = new Image()
-logo.src = 'undip-logo.png'
+import logo from '../undip-logo.png'
 
 function activitiesGen(activities: Activities[]) {
   let body = []
@@ -40,7 +38,13 @@ function activitiesGen(activities: Activities[]) {
       }
     ]
     body.push(newActivity)
-    body.push([{ content: 'image', colSpan: 4, styles: { minCellHeight: 55, lineWidth: 0 } }])
+    body.push([
+      {
+        content: 'image',
+        colSpan: 4,
+        styles: { minCellHeight: 55, lineWidth: 0 }
+      }
+    ])
   })
 
   return body
@@ -130,7 +134,9 @@ export function print(log: Log) {
   })
 
   const finalY = (doc as any).previousAutoTable.finalY + 10
-  const rightMost = doc.internal.pageSize.getWidth() - (doc as any).previousAutoTable.settings.margin.right
+  const rightMost =
+    doc.internal.pageSize.getWidth() -
+    (doc as any).previousAutoTable.settings.margin.right
 
   doc.setFontSize(12)
   doc.text(`${log.city}, ${log.date}`, rightMost, finalY, { align: 'right' })
