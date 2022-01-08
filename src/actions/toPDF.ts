@@ -132,5 +132,10 @@ export function print(log: Log) {
     )
   }
 
-  doc.save('table.pdf')
+  doc.save(
+    new Date(log.date).toLocaleString('id', { month: 'short' }) +
+      '-' +
+      new Date(log.date).toLocaleString('id', { day: 'numeric' }) +
+      '.pdf'
+  )
 }
