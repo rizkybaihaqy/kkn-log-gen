@@ -83,21 +83,25 @@ export function Form() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
+        <label htmlFor="name">Nama</label>
         <input
           type="text"
           placeholder="name"
           {...register('name', { required: true })}
         />
+        <label htmlFor="city">Kota</label>
         <input
           type="text"
           placeholder="city"
           {...register('city', { required: true })}
         />
+        <label htmlFor="signature">Tanda tangan</label>
         <FileInput name="signature" errors={errors} register={register} />
       </div>
       <hr />
 
       <div>
+        <label htmlFor="dayCount">Hari ke</label>
         <input
           type="number"
           placeholder="Day"
@@ -115,24 +119,31 @@ export function Form() {
       <div>
         {fields.map((field, index) => (
           <div key={field.id}>
-            <input
-              type="time"
-              placeholder="Activity time"
-              {...register(`activities.${index}.timeStart`, { required: true })}
-            />
-            <input
-              type="time"
-              placeholder="Activity time"
-              {...register(`activities.${index}.timeEnd`, { required: true })}
-            />
+            <label htmlFor={`activities.${index}.name`}>Kegiatan</label>
             <input
               type="text"
               placeholder="Activity"
               {...register(`activities.${index}.name`, { required: true })}
             />
+            <label htmlFor={`activities.${index}.timeStart`}>Waktu mulai</label>
+            <input
+              type="time"
+              placeholder="Activity time"
+              {...register(`activities.${index}.timeStart`, { required: true })}
+            />
+            <label htmlFor={`activities.${index}.timeEnd`}>Waktu Selesai</label>
+            <input
+              type="time"
+              placeholder="Activity time"
+              {...register(`activities.${index}.timeEnd`, { required: true })}
+            />
+            <label htmlFor={`activities.${index}.detail`}>
+              Detail kegiatan
+            </label>
             <textarea
               {...register(`activities.${index}.detail`, { required: true })}
             />
+            <label htmlFor={`activities.${index}.documentation`}></label>
             <FileInput
               name={`activities.${index}.documentation`}
               errors={errors}
