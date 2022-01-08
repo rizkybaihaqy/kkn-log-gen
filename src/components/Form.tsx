@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { getBase64 } from '../actions/getBase64'
 import { getDateByDay } from '../actions/getDay'
@@ -10,12 +11,24 @@ export function Form() {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<Inputs>({
     defaultValues: {
       activities: [{ timeStart: '', timeEnd: '', name: '', detail: '' }]
     }
   })
+
+  useEffect(() => {
+    const signature64 = localStorage.getItem('signature64')
+    const name = localStorage.getItem('name')
+    const city = localStorage.getItem('city')
+    if (signature64 && city && name) {
+      setValue('name', name)
+      setValue('city', city)
+      setValue('signature', signature64)
+    }
+  }, [])
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -40,7 +53,17 @@ export function Form() {
     )
 
     const date = getDateByDay(+data.dayCount)
-    const signature64 = await getBase64(data.signature[0])
+
+    let signature64: string
+    try {
+      signature64 = await getBase64(data.signature[0])
+    } catch (error) {
+      signature64 = data.signature
+    }
+
+    localStorage.setItem('signature64', signature64)
+    localStorage.setItem('name', data.name)
+    localStorage.setItem('city', data.city)
 
     print({
       dayCount: data.dayCount,
