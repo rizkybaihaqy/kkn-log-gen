@@ -1,28 +1,24 @@
-import { useState } from "react"
-import { useController } from "react-hook-form"
+import { useCallback, useState } from 'react'
+import { getBase64 } from '../actions/getBase64'
 
-export const FileInput = ({ control, name }: any) => {
-  const { field } = useController({ control, name })
-  const [value, setValue] = useState('')
+export function FileInput({ name, errors, register }: any) {
+  const { onChange, ref } = register(name)
+  const [image, setImage] = useState<string>()
+
+  const onAvatarChange = useCallback(async (event) => {
+    if (event.target.files?.[0]) {
+      const base64 = (await getBase64(event.target.files[0])) as string
+
+      setImage(base64)
+      onChange(event)
+    }
+  }, [])
+
   return (
-    <>
-      <input
-        type="file"
-        value={value}
-        onChange={async (e) => {
-          setValue(e.target.value)
-
-          if (!e.target.files) return
-          const file = e.target.files[0]
-          const base64 = await new Promise((resolve) => {
-            const reader = new FileReader()
-            reader.onloadend = () => resolve(reader.result)
-            reader.readAsDataURL(file)
-          })
-
-          field.onChange(base64)
-        }}
-      />
-    </>
+    <div>
+      {image && <img src={image} width="100px" alt="uploaded" />}
+      <input type="file" name={name} ref={ref} onChange={onAvatarChange} />
+      <p>{errors[name]?.message}</p>
+    </div>
   )
 }

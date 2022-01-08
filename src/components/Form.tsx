@@ -5,15 +5,18 @@ import {
   useFieldArray,
   useForm
 } from 'react-hook-form'
+import { getBase64 } from '../actions/getBase64'
 import { getDateByDay } from '../actions/getDay'
 import { print } from '../actions/toPDF'
 import { Activities, Inputs } from '../type'
+import { FileInput } from './FileInput'
 
 export function Form() {
   const {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<Inputs>({
     defaultValues: {
@@ -30,18 +33,22 @@ export function Form() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     let newActivity: Activities[] = []
 
-    data.activities.forEach(async (activity) => {
-      const time = activity.timeStart + '-' + activity.timeEnd
+    await Promise.all(
+      data.activities.map(async (activity, i) => {
+        const time = activity.timeStart + '-' + activity.timeEnd
+        const base64 = await getBase64(activity.documentation[0])
 
-      newActivity.push({
-        name: activity.name,
-        time,
-        detail: activity.detail,
-        documentation: activity.documentation
+        newActivity.push({
+          name: activity.name,
+          detail: activity.detail,
+          time,
+          documentation: base64
+        })
       })
-    })
+    )
 
     const date = getDateByDay(+data.dayCount)
+    const signature64 = await getBase64(data.signature[0])
 
     print({
       dayCount: data.dayCount,
@@ -54,35 +61,36 @@ export function Form() {
       activities: newActivity,
       name: data.name,
       city: data.city,
-      signature: data.signature
+      signature: signature64
     })
   }
 
-  const FileInput = ({ control, name }: any) => {
-    const { field } = useController({ control, name })
-    const [value, setValue] = useState('')
-    return (
-      <>
-        <input
-          type="file"
-          value={value}
-          onChange={async (e) => {
-            setValue(e.target.value)
+  // const FileInput = ({ control, name }: any) => {
+  //   const { field } = useController({ control, name })
+  //   const [val, setVal] = useState('')
+  //   const [image, setImage] = useState<string>()
 
-            if (!e.target.files) return
-            const file = e.target.files[0]
-            const base64 = await new Promise((resolve) => {
-              const reader = new FileReader()
-              reader.onloadend = () => resolve(reader.result)
-              reader.readAsDataURL(file)
-            })
+  //   return (
+  //     <>
+  //       {image && <img src={image} width="100px" alt='uploaded' />}
+  //       <input
+  //         type="file"
+  //         value={val}
+  //         onChange={async (e) => {
+  //           setVal(e.target.value)
 
-            field.onChange(base64)
-          }}
-        />
-      </>
-    )
-  }
+  //           if (!e.target.files) return
+  //           const base64 = await getBase64(e.target.files[0]) as string
+
+  //           console.log(name, base64)
+
+  //           setImage(base64)
+  //           field.onChange(base64)
+  //         }}
+  //       />
+  //     </>
+  //   )
+  // }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,7 +105,7 @@ export function Form() {
           placeholder="city"
           {...register('city', { required: true })}
         />
-        <FileInput name="signature" control={control} />
+        <FileInput name="signature" errors={errors} register={register} />
       </div>
       <hr />
 
@@ -139,8 +147,13 @@ export function Form() {
             />
             <FileInput
               name={`activities.${index}.documentation`}
-              control={control}
+              errors={errors}
+              register={register}
             />
+            {/* <FileInput
+              name={`activities.${index}.documentation`}
+              control={control}
+            /> */}
             <button type="button" onClick={() => remove(index)}>
               Delete
             </button>
