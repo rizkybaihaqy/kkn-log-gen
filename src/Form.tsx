@@ -100,6 +100,7 @@ export function Form() {
         <FileInput name="signature" control={control} />
       </div>
       <hr />
+
       <div>
         <input
           type="number"
@@ -113,6 +114,8 @@ export function Form() {
         />
         {errors.dayCount && <span>Activities only up to 45 days</span>}
       </div>
+      <hr />
+
       <div>
         {fields.map((field, index) => (
           <div key={field.id}>
@@ -141,6 +144,7 @@ export function Form() {
             <button type="button" onClick={() => remove(index)}>
               Delete
             </button>
+            <hr />
           </div>
         ))}
 
