@@ -1,10 +1,4 @@
-import { useState } from 'react'
-import {
-  SubmitHandler,
-  useController,
-  useFieldArray,
-  useForm
-} from 'react-hook-form'
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { getBase64 } from '../actions/getBase64'
 import { getDateByDay } from '../actions/getDay'
 import { print } from '../actions/toPDF'
@@ -16,7 +10,6 @@ export function Form() {
     register,
     control,
     handleSubmit,
-    setValue,
     formState: { errors }
   } = useForm<Inputs>({
     defaultValues: {
@@ -25,16 +18,15 @@ export function Form() {
   })
 
   const { fields, append, remove } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: 'activities' // unique name for your Field Array
-    // keyName: "id", default to "id", you can change the key name
+    control,
+    name: 'activities'
   })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     let newActivity: Activities[] = []
 
     await Promise.all(
-      data.activities.map(async (activity, i) => {
+      data.activities.map(async (activity) => {
         const time = activity.timeStart + '-' + activity.timeEnd
         const base64 = await getBase64(activity.documentation[0])
 
@@ -64,33 +56,6 @@ export function Form() {
       signature: signature64
     })
   }
-
-  // const FileInput = ({ control, name }: any) => {
-  //   const { field } = useController({ control, name })
-  //   const [val, setVal] = useState('')
-  //   const [image, setImage] = useState<string>()
-
-  //   return (
-  //     <>
-  //       {image && <img src={image} width="100px" alt='uploaded' />}
-  //       <input
-  //         type="file"
-  //         value={val}
-  //         onChange={async (e) => {
-  //           setVal(e.target.value)
-
-  //           if (!e.target.files) return
-  //           const base64 = await getBase64(e.target.files[0]) as string
-
-  //           console.log(name, base64)
-
-  //           setImage(base64)
-  //           field.onChange(base64)
-  //         }}
-  //       />
-  //     </>
-  //   )
-  // }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -150,10 +115,6 @@ export function Form() {
               errors={errors}
               register={register}
             />
-            {/* <FileInput
-              name={`activities.${index}.documentation`}
-              control={control}
-            /> */}
             <button type="button" onClick={() => remove(index)}>
               Delete
             </button>

@@ -85,28 +85,6 @@ export function print(log: Log) {
       ]
     ],
     body: activitiesGen(log.activities),
-    // [
-    //   [{ content: 'A. Jadwal Kegiatan', colSpan: 4 }],
-    //   ['No.', 'Waktu', { content: 'Kegiatan', colSpan: 2 }],
-    //   [
-    //     '1',
-    //     '10.30-11.30',
-    //     {
-    //       content: 'Perizinan dan diskusi awal di Kel. Bojong Rawalumbu',
-    //       colSpan: 2
-    //     }
-    //   ],
-    //   [{ content: 'B. Catatan Penting Harian', colSpan: 4 }],
-    //   [
-    //     { content: '1.', styles: { lineWidth: 0 } },
-    //     {
-    //       content:
-    //         'Sudah didapatkan izin secara lisan dari Kel. Bojong Rawalumbu',
-    //       colSpan: 3,
-    //       styles: { lineWidth: 0 }
-    //     }
-    //   ]
-    // ],
     didDrawCell: (data) => {
       if (data.section === 'head' && data.column.index === 0) {
         doc.addImage(logo, 'png', data.cell.x + 2, data.cell.y + 2, 20, 20)
@@ -154,6 +132,5 @@ export function print(log: Log) {
     )
   }
 
-  // doc.output('dataurlnewwindow')
   doc.save('table.pdf')
 }
