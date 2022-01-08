@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/kkn-log-gen/static/js/main.73b744af.js",
+    "main.js": "/kkn-log-gen/static/js/main.db03d11a.js",
     "static/js/498.f167bb97.chunk.js": "/kkn-log-gen/static/js/498.f167bb97.chunk.js",
     "static/js/703.428d3184.chunk.js": "/kkn-log-gen/static/js/703.428d3184.chunk.js",
     "static/js/528.e9c38938.chunk.js": "/kkn-log-gen/static/js/528.e9c38938.chunk.js",
     "static/media/undip-logo.png": "/kkn-log-gen/static/media/undip-logo.3551ccdf119c662a9d14.png",
     "index.html": "/kkn-log-gen/index.html",
-    "main.73b744af.js.map": "/kkn-log-gen/static/js/main.73b744af.js.map",
+    "main.db03d11a.js.map": "/kkn-log-gen/static/js/main.db03d11a.js.map",
     "498.f167bb97.chunk.js.map": "/kkn-log-gen/static/js/498.f167bb97.chunk.js.map",
     "703.428d3184.chunk.js.map": "/kkn-log-gen/static/js/703.428d3184.chunk.js.map",
     "528.e9c38938.chunk.js.map": "/kkn-log-gen/static/js/528.e9c38938.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.73b744af.js"
+    "static/js/main.db03d11a.js"
   ]
 }
