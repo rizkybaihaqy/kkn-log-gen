@@ -63,13 +63,13 @@ export function Form() {
     const [value, setValue] = useState('')
     return (
       <>
-        {value && <img alt="uploaded files" src={value} />}
         <input
           type="file"
           value={value}
           onChange={async (e) => {
-            if (!e.target.files) return
+            setValue(e.target.value)
 
+            if (!e.target.files) return
             const file = e.target.files[0]
             const base64 = await new Promise((resolve) => {
               const reader = new FileReader()
@@ -77,7 +77,6 @@ export function Form() {
               reader.readAsDataURL(file)
             })
 
-            setValue(e.target.value)
             field.onChange(base64)
           }}
         />
@@ -87,6 +86,20 @@ export function Form() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <input
+          type="text"
+          placeholder="name"
+          {...register('name', { required: true })}
+        />
+        <input
+          type="text"
+          placeholder="city"
+          {...register('city', { required: true })}
+        />
+        <FileInput name="signature" control={control} />
+      </div>
+      <hr />
       <div>
         <input
           type="number"
@@ -138,20 +151,6 @@ export function Form() {
           }}>
           Add activity
         </button>
-      </div>
-
-      <div>
-        <input
-          type="text"
-          placeholder="name"
-          {...register('name', { required: true })}
-        />
-        <input
-          type="text"
-          placeholder="city"
-          {...register('city', { required: true })}
-        />
-        <FileInput name="signature" control={control} />
       </div>
       <input type="submit" />
     </form>
