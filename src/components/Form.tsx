@@ -5,9 +5,9 @@ import {
   useFieldArray,
   useForm
 } from 'react-hook-form'
-import { getDayByNum } from './getDay'
-import { print } from './toPDF'
-import { Activities, Inputs } from './type'
+import { getDateByDay } from '../actions/getDay'
+import { print } from '../actions/toPDF'
+import { Activities, Inputs } from '../type'
 
 export function Form() {
   const {
@@ -41,7 +41,7 @@ export function Form() {
       })
     })
 
-    const date = getDayByNum(+data.dayCount)
+    const date = getDateByDay(+data.dayCount)
 
     print({
       dayCount: data.dayCount,

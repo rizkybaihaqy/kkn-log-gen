@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import { Activities, Log } from './type'
+import { Activities, Log } from '../type'
 
 const logo = new Image()
 logo.src = 'undip-logo.png'

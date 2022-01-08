@@ -15,13 +15,11 @@
 //   return day + 1
 // }
 
-export const getDayByNum = (num: number) => {
+export const getDateByDay = (day: number) => {
   const oneDay = 1000 * 60 * 60 * 24
   const start = new Date(
     'Wed Jan 05 2022 09:00:00 GMT+0700 (Western Indonesia Time)'
   ).getTime()
 
-  const day = (num - 1) * oneDay
-
-  return new Date(day + start)
+  return new Date((day - 1) * oneDay + start)
 }
