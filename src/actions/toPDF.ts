@@ -40,7 +40,7 @@ function activitiesGen(activities: Activities[]) {
     body.push(newActivity)
     body.push([
       {
-        content: 'image',
+        content: 'image' + i,
         colSpan: 4,
         styles: { minCellHeight: 55, lineWidth: 0 }
       }
@@ -111,8 +111,9 @@ export function print(log: Log) {
       if (data.section === 'head' && data.column.index === 0) {
         doc.addImage(logo, 'png', data.cell.x + 2, data.cell.y + 2, 20, 20)
       }
-      if (data.section === 'body' && data.cell.text[0] === 'image') {
-        log.activities.forEach((activity) => {
+
+      log.activities.forEach((activity, i) => {
+        if (data.cell.text[0] === 'image' + i) {
           if (!activity.documentation) return
           doc.addImage(
             activity.documentation,
@@ -122,8 +123,8 @@ export function print(log: Log) {
             50,
             50
           )
-        })
-      }
+        }
+      })
     },
     rowPageBreak: 'avoid',
     theme: 'plain',
